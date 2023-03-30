@@ -8,8 +8,6 @@ import Card from "./card";
 import { TransactionContext } from "../App";
 import AddTransaction from "./addtransaction";
 import URL from "../url";
-import axios from "axios";
-import url from "../url";
 function Transaction() {
   const { state: authState } = React.useContext(AuthContext);
   const [state, dispatch] = React.useReducer(
@@ -28,18 +26,10 @@ function Transaction() {
     dispatch({
       type: "FETCH_TRANSACTION_REQUEST",
     });
-    // fetch(URL + "/transactions", {
-    //   method: "GET",
-    //   headers: {
-    //     Authorization: authState.token,
-    //   },
-    //   credentials: "include",
-    // })
-    axios
-      .get(url + "/transactions", {
-        headers: { Authorization: authState.token },
-        withCredentials: true,
-      })
+    fetch(URL + "/transactions", {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -48,19 +38,17 @@ function Transaction() {
         }
       })
       .then((resJson) => {
-        console.log(resJson);
         dispatch({
           type: "FETCH_TRANSACTION_SUCCESS",
-          payload: resJson,
+          payload: resJson.data,
         });
       })
       .catch((error) => {
-        console.log(error);
         dispatch({
           type: "FETCH_TRANSACTION_FAILURE",
         });
       });
-  }, [authState.token]);
+  }, [authState.accessToken]);
 
   return (
     <React.Fragment>
@@ -83,9 +71,7 @@ function Transaction() {
         ) : (
           <>
             {state.data.length > 0 &&
-              state.data.map((data) => (
-                <Card key={data.id.toString()} data={data.data} />
-              ))}
+              state.data.map((data, i) => <Card key={i} data={data} />)}
           </>
         )}
       </div>

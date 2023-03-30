@@ -2,7 +2,7 @@ const transaction_InitialState = {
   data: [],
   isFetching: false,
   hasError: false,
-  isTransactionSubmitted: false,
+  isTransactionSubmitting: false,
   transactionError: false,
 };
 const transaction_Reducer = (state, action) => {
@@ -17,7 +17,7 @@ const transaction_Reducer = (state, action) => {
       return {
         ...state,
         isFetching: false,
-        songs: action.payload,
+        data: action.payload,
       };
     case "FETCH_TRANSACTION_FAILURE":
       return {
@@ -28,20 +28,20 @@ const transaction_Reducer = (state, action) => {
     case "ADD_TRANSACTION_REQUEST":
       return {
         ...state,
-        isSongSubmitting: true,
-        songHasError: false,
+        isTransactionSubmitting: true,
+        transactionError: false,
       };
     case "ADD_TRANSACTION_SUCCESS":
       return {
         ...state,
-        isSongSubmitting: false,
-        songs: [...state.songs, action.payload],
+        isTransactionSubmitting: false,
+        data: [...state.data, action.payload],
       };
     case "ADD_TRANSACTION_FAILURE":
       return {
         ...state,
-        isSongSubmitting: false,
-        songHasError: true,
+        isTransactionSubmitting: false,
+        transactionError: true,
       };
     default:
       return state;

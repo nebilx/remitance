@@ -15,7 +15,7 @@ function App() {
     const user = JSON.parse(localStorage.getItem("user") || null);
     const accessToken = JSON.parse(localStorage.getItem("token") || null);
 
-    console.log(Cookies.get("refreshToken"));
+    // console.log(Cookies.get("refreshToken"));
     if (user && accessToken) {
       dispatch({
         type: "LOGIN",

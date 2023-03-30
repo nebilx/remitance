@@ -50,7 +50,6 @@ function AddTransaction(props) {
         }
       })
       .then((data) => {
-        console.log(data);
         setB_name("");
         setAmount("");
         setB_Account("");
