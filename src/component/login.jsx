@@ -1,10 +1,11 @@
 import React from "react";
 import { AuthContext } from "../App";
 import logo from "../logo.svg";
-import URL from "../url";
+import { useNavigate } from "react-router-dom";
+
 function Login() {
   const { dispatch } = React.useContext(AuthContext);
-
+  const navigate = useNavigate();
   const initialState = {
     email: "",
     password: "",
@@ -26,7 +27,7 @@ function Login() {
       isSubmitting: true,
       errorMessage: null,
     });
-    fetch(URL + "/users/login", {
+    fetch("/users/login", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -43,12 +44,16 @@ function Login() {
         throw res;
       })
       .then((resJson) => {
+        navigate("/transaction");
+
         dispatch({
           type: "LOGIN",
           payload: resJson,
         });
       })
       .catch((error) => {
+        console.log("error");
+        console.log(error);
         setData({
           ...data,
           isSubmitting: false,
@@ -72,6 +77,7 @@ function Login() {
                 onChange={handleInputChange}
                 name="email"
                 id="email"
+                required
               />
             </label>
 
@@ -83,6 +89,7 @@ function Login() {
                 onChange={handleInputChange}
                 name="password"
                 id="password"
+                required
               />
             </label>
 
@@ -97,6 +104,15 @@ function Login() {
                 "Login"
               )}
             </button>
+
+            <label
+              className="label-id"
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              Don't have account{" "}
+            </label>
           </form>
         </div>
       </div>

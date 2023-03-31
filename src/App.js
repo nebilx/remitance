@@ -1,10 +1,12 @@
 import "./App.css";
 import React from "react";
-import { user_InitialState, user_Reducer } from "./user.reducer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { user_InitialState, user_Reducer } from "./reducer/user.reducer";
 import Header from "./component/header";
 import Transaction from "./component/transaction";
 import Login from "./component/login";
-import Cookies from "js-cookie";
+import Register from "./component/register";
 export const AuthContext = React.createContext();
 export const TransactionContext = React.createContext();
 
@@ -28,17 +30,26 @@ function App() {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        state,
-        dispatch,
-      }}
-    >
-      <Header />
-      <div className="App">
-        {!state.isAuthenticated ? <Login /> : <Transaction />}
-      </div>
-    </AuthContext.Provider>
+    <BrowserRouter>
+      <AuthContext.Provider
+        value={{
+          state,
+          dispatch,
+        }}
+      >
+        <Header />
+        {!state.isAuthenticated ? (
+          <Routes>
+            <Route path="/" exact element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route path="/transaction" element={<Transaction />} />
+          </Routes>
+        )}
+      </AuthContext.Provider>
+    </BrowserRouter>
   );
 }
 

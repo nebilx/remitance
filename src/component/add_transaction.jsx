@@ -1,7 +1,7 @@
 import React from "react";
 import { TransactionContext } from "../App";
 import { AuthContext } from "../App";
-import URL from "../url";
+
 function AddTransaction(props) {
   const { state, dispatch } = React.useContext(TransactionContext);
   const { state: authState } = React.useContext(AuthContext);
@@ -33,13 +33,12 @@ function AddTransaction(props) {
       beneficiary_account: b_account,
       beneficiary_bank: b_bank,
     };
-    fetch(URL + "/transactions", {
+    fetch("/transactions", {
       method: "POST",
       headers: {
-        Authorization: authState.token,
-        "Content-Type": `application/json`,
+        Authorization: authState.accessToken,
       },
-      withCredentials: true,
+      credentials: "include",
       body: JSON.stringify(transaction),
     })
       .then((res) => {

@@ -2,12 +2,11 @@ import React from "react";
 import {
   transaction_InitialState,
   transaction_Reducer,
-} from "../transaction.reducer";
+} from "../reducer/transaction.reducer";
 import { AuthContext } from "../App";
 import Card from "./card";
 import { TransactionContext } from "../App";
-import AddTransaction from "./addtransaction";
-import URL from "../url";
+import AddTransaction from "./add_transaction";
 function Transaction() {
   const { state: authState } = React.useContext(AuthContext);
   const [state, dispatch] = React.useReducer(
@@ -26,8 +25,11 @@ function Transaction() {
     dispatch({
       type: "FETCH_TRANSACTION_REQUEST",
     });
-    fetch(URL + "/transactions", {
+    fetch("/transactions", {
       method: "GET",
+      headers: {
+        Authorization: authState.accessToken,
+      },
       credentials: "include",
     })
       .then((res) => {
